@@ -23,7 +23,7 @@ struct Kruskal{
       p[y]=x;
     }
   };
-  
+
   struct edge{
     int from,to,cost,used;
     edge(){}
@@ -39,7 +39,7 @@ struct Kruskal{
 
   Kruskal(){}
   Kruskal(int sz):n(sz){}
-  
+
   void add_edge(int u,int v,int c){
     edges.emplace_back(u,v,c);
   }
@@ -51,16 +51,16 @@ struct Kruskal{
       add_edge(a+offset,b+offset,c);
     }
   }
-  
+
   int build(){
     sort(edges.begin(),edges.end());
     UnionFind uf(n+1);
     int res=0;
     for(auto &e:edges){
       if(!uf.same(e.from,e.to)){
-	res+=e.cost;
-	uf.unite(e.from,e.to);
-	e.used=1;
+        res+=e.cost;
+        uf.unite(e.from,e.to);
+        e.used=1;
       }
     }
     return res;

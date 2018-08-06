@@ -1,39 +1,42 @@
-#include<bits/stdc++.h>
 using namespace std;
-using Int = long long;
+#include<bits/stdc++.h>
 //BEGIN CUT HERE
-template <typename T>
-vector<T> dijkstra(int s,vector<vector<pair<int, T> > > & G,T INF){
-  using P = pair<T, int>;
-  int n=G.size();
-  vector<T> d(n,INF);
-  vector<int> b(n,-1);
-  priority_queue<P,vector<P>,greater<P> > q;
-  d[s]=0;
-  q.emplace(d[s],s);
+//{{{ dijkstra(start, graph, inf_for_initing_cost)
+template <typename cost, typename node>
+vector<cost> dijkstra(
+    // return d (d[i]:iへの最短距離)
+    node s, //start node
+    vector<vector<pair<node, cost>>> & G,  //Graph
+    cost inf // cost初期化用の十分大きな値
+    ){
+  using P = pair<cost, node>; // <cost, v> costをkeyにするため
+  node n=G.size();
+  vector<cost> d(n, inf);  // 最短距離
+  priority_queue<P, vector<P>, greater<P>> q;
+
+  d[s]=0; q.emplace(d[s], s);
   while(!q.empty()){
     P p=q.top();q.pop();
-    int v=p.second;
+    node v=p.second;
     if(d[v]<p.first) continue;
     for(auto& e:G[v]){
-      int u=e.first;
-      T c=e.second;
+      node u=e.first;
+      cost c=e.second;
       if(d[u]>d[v]+c){
-	d[u]=d[v]+c;
-	b[u]=v;
-	q.emplace(d[u],u);
+        d[u]=d[v]+c;
+        q.emplace(d[u],u);
       }
     }
   }
   return d;
-}
+} //}}}
 //END CUT HERE
 
 signed main(){
-  int n,l;
-  cin>>n>>l;
+  int n,l; cin>>n>>l;
+  using Int = long long;
   using P = pair<int, Int>;
-  vector<vector<P> > G(l+1);
+  vector<vector<P> > G(l+1);  // G[i] = [(node, cost), (node, cost), ・・・]
   for(int i=0;i<n;i++){
     int a,b,c;
     cin>>a>>b>>c;
@@ -46,6 +49,6 @@ signed main(){
 }
 
 /*
-  verified on 2017/11/27
-  http://arc026.contest.atcoder.jp/tasks/arc026_3
+   verified on 2017/11/27
+http://arc026.contest.atcoder.jp/tasks/arc026_3
 */
